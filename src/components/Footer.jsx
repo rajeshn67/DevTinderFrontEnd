@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="footer bg-base-300 text-gray-300 p-4 flex flex-col md:flex-row justify-between items-center shadow-md fixed bottom-0 w-full">
+    <footer className="footer bg-base-300 text-gray-300 p-4 flex flex-col md:flex-row justify-between items-center shadow-md ">
       {/* Left Section - Logo & Copyright */}
       <div className="flex items-center gap-3">
         <svg

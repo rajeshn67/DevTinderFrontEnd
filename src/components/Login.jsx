@@ -8,6 +8,7 @@ import { BASE_URL } from "../utils/constants";
 const Login = () => {
   const [emailId, setEmailId] = useState("rajeshnarwade67@gmail.com");
   const [password, setPassword] = useState("Rajesh@2004");
+  const [error, setError] = useState("");
   const dispatch=useDispatch();
   const navigate = useNavigate();
   const handleLogin = async()=>{
@@ -21,11 +22,12 @@ const Login = () => {
        },
        { withCredentials: true }
      );
-     console.log(res.data);
+   
      dispatch(addUser(res.data))
      return navigate("/");
   }catch(err){
-     console.log(err);
+    setError(err?.response?.data || "Something went wrong");
+    
   }
   };
   return (
@@ -46,9 +48,9 @@ const Login = () => {
                 value={emailId}
                 placeholder="Enter your email"
                 className="input input-bordered w-full bg-gray-700 text-white rounded-lg px-3 py-2 hover:ring hover:ring-blue-500 transition"
-
                 onChange={(e) => {
-                  setEmailId(e.target.value);}}
+                  setEmailId(e.target.value);
+                }}
               />
             </label>
 
@@ -65,16 +67,22 @@ const Login = () => {
                 value={password}
                 placeholder="Enter your password"
                 className="input input-bordered w-full bg-gray-700 text-white rounded-lg px-3 py-2 hover:ring hover:ring-blue-500 transition"
-
                 onChange={(e) => {
-                  setPassword(e.target.value);}}
+                  setPassword(e.target.value);
+                }}
               />
             </label>
           </div>
 
           {/* Login Button */}
+          <p className="text-red-500 text-center mt-2 text-sm font-medium"> 
+            {error}
+          </p>
           <div className="card-actions justify-center mt-8">
-            <button className="w-full py-3 rounded-md text-white text-lg font-medium bg-blue-600 hover:bg-blue-700 transition" onClick={handleLogin}>
+            <button
+              className="w-full py-3 rounded-md text-white text-lg font-medium bg-blue-600 hover:bg-blue-700 transition"
+              onClick={handleLogin}
+            >
               Login
             </button>
           </div>
