@@ -1,34 +1,42 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { BASE_URL } from "../utils/constants";
-import { removeUser } from '../utils/userSlice';
+import { removeUser } from "../utils/userSlice";
+import { removeFeed } from "../utils/feedSlice";
 
 const NavBar = () => {
-  const user =useSelector((store)=>store.user);
+  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const HandleLogOut= async()=>{
-   try{
-     await axios.post(BASE_URL + "/logout",{/*not passing any value */},{ withCredentials: true });
-     dispatch(removeUser());
-     return navigate("/login");
-  }catch(err){
-     //handle error here
-  
-   }
-    
-  }
+  const HandleLogOut = async () => {
+    try {
+      await axios.post(
+        BASE_URL + "/logout",
+        {
+          /*not passing any value */
+        },
+        { withCredentials: true }
+      );
+      dispatch(removeUser());
+      dispatch(removeFeed()); // I self Added Eye on it Rajesh
+      return navigate("/login");
+    } catch (err) {
+      //handle error here
+    }
+  };
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">DevTinder</Link>
+        <Link to="/" className="btn btn-ghost text-xl">
+          DevTinder
+        </Link>
       </div>
       {user && (
-      <div className="flex-none gap-2 flex" >
-        <div className="form-control py-2">Welcome, {user.firstname}</div>
-             
+        <div className="flex-none gap-2 flex">
+          <div className="form-control py-2">Welcome, {user.firstname}</div>
+
           <div className="dropdown dropdown-end mx-5 flex">
             <div
               tabIndex={0}
@@ -50,17 +58,19 @@ const NavBar = () => {
                 </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to="/connections" className="justify-between">
+                  Connections
+                </Link>
               </li>
               <li>
                 <a onClick={HandleLogOut}>Logout</a>
               </li>
             </ul>
           </div>
-      
-      </div>  )}
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default NavBar
+export default NavBar;

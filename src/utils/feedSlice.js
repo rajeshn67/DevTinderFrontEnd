@@ -13,5 +13,5 @@ import { createSlice } from "@reduxjs/toolkit";
    },
  });
  
- export const { addFeed } = feedSlice.actions;
+ export const { addFeed ,removeFeed } = feedSlice.actions;
  export default feedSlice.reducer;
