@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { removeUser } from "../utils/userSlice";
-import { removeFeed } from "../utils/feedSlice";
+
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
@@ -20,7 +20,9 @@ const NavBar = () => {
         { withCredentials: true }
       );
       dispatch(removeUser());
-      dispatch(removeFeed()); // I self Added Eye on it Rajesh
+    
+     // add the dispatches of feed connection and requests here if need to be removed
+     
       return navigate("/login");
     } catch (err) {
       //handle error here
@@ -60,6 +62,11 @@ const NavBar = () => {
               <li>
                 <Link to="/connections" className="justify-between">
                   Connections
+                </Link>
+              </li>
+              <li>
+                <Link to="/requests" className="justify-between">
+                 Requests
                 </Link>
               </li>
               <li>

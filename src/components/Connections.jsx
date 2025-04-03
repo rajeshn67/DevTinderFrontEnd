@@ -7,6 +7,8 @@ import { addConnections } from "../utils/connectionSlice";
 const Connections = () => {
   const connections = useSelector((state) => state.connections);
   const dispatch = useDispatch();
+
+
   const fetchConnections = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/connections", {
@@ -22,13 +24,32 @@ const Connections = () => {
     fetchConnections();
   }, []);
   if (!connections) return;
-  if (connections.length === 0) return <h1>No Connections</h1>;
+  if (connections.length === 0) return <h1 className="flex justify-center my-10">No Connections</h1>;
   return (
-    <div className="flex justify-center my-10">
-      <h1 className="text-bold text-2xl">Connections</h1>
-      {connections.map((connections) => (
-        <div>{connections.firstname}</div>
-      ))}
+    <div className=" text-center my-10">
+      <h1 className="text-bold text-white text-3xl">Connections</h1>
+      {connections.map((connection) => {
+        const { _id,firstname, lastname, photoURL, age, Gender, about } =
+          connection;
+        return (
+          <div  key ={_id}className=" flex m-4 p-4 rounded-lg bg-base-300 w-1/2 mx-auto">
+            <div>
+              <img
+                alt="Photo"
+                className="w-20 h-20 rounded-full" // add  <object-cover> css class to make it look good
+                src={photoURL}
+              />
+            </div>
+            <div className="text-left mx-4">
+              <h2 className="font-bold text-xl">
+                {firstname + " " + lastname}
+              </h2>
+             { age && Gender && <p>{age+" , "+Gender}</p>}
+              <p>{about}</p>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
