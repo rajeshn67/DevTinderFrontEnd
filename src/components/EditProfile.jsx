@@ -8,9 +8,9 @@ import axios from "axios";
 const EditProfile = ({ user }) => {
   const [firstname, setFirstName] = useState(user.firstname);
   const [lastname, setLastName] = useState(user.lastname);
-  const [age, setAge] = useState(user.age);
-  const [Gender, setGender] = useState(user.Gender);
-  const [about, setAbout] = useState(user.about);
+  const [age, setAge] = useState(user.age || "");
+  const [Gender, setGender] = useState(user.Gender || "");
+  const [about, setAbout] = useState(user.about || "");
   const [photoURL, setPhotoURL] = useState(user.photoURL);
   const [error, setError] = useState("");
   const[showToast, setShowToast] = useState(false);
