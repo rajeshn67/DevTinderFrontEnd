@@ -43,7 +43,7 @@ function Footer() {
 
         {/* LinkedIn */}
         <a
-          href="https://www.linkedin.com/in/rajesh-narwade-243bb42b2"
+          href="https://www.linkedin.com/in/rajeshn67"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-gray-400 transition"

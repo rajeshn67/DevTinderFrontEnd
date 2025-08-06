@@ -20,11 +20,12 @@ const Chat = () => {
     console.log(chat.data.messages);
 
     const chatMessages = chat?.data?.messages.map((msg) => {
-      const { senderId, text } = msg;
+      const { senderId, text, createdAt } = msg;
       return {
         firstname: senderId?.firstname,
         lastname: senderId?.lastname,
         text,
+        createdAt,
       };
     });
     setMessages(chatMessages);
@@ -45,9 +46,9 @@ const Chat = () => {
       targetUserId,
     });
 
-    socket.on("messageReceived", ({ firstname, lastname, text }) => {
+    socket.on("messageReceived", ({ firstname, lastname, text, createdAt }) => {
       console.log(firstname + " :  " + text);
-      setMessages((messages) => [...messages, { firstname, lastname, text }]);
+      setMessages((messages) => [...messages, { firstname, lastname, text, createdAt: createdAt || new Date().toISOString() }]);
     });
 
     return () => {
@@ -72,6 +73,19 @@ const Chat = () => {
       <h1 className="p-5 border-b border-gray-600">Chat</h1>
       <div className="flex-1 overflow-scroll p-5">
         {messages.map((msg, index) => {
+          // Format time using dayjs if available, else fallback
+          let timeAgo = '';
+          try {
+            const dayjs = require('dayjs');
+            const relativeTime = require('dayjs/plugin/relativeTime');
+            dayjs.extend(relativeTime);
+            timeAgo = msg.createdAt ? dayjs(msg.createdAt).fromNow() : '';
+          } catch {
+            if (msg.createdAt) {
+              const date = new Date(msg.createdAt);
+              timeAgo = date.toLocaleString();
+            }
+          }
           return (
             <div
               key={index}
@@ -81,8 +95,9 @@ const Chat = () => {
               }
             >
               <div className="chat-header">
-                {`${msg.firstname}  ${msg.lastname}`}
-                <time className="text-xs opacity-50"> 2 hours ago</time>
+                <span className="text-xs text-gray-400">
+                  {msg.firstname} {msg.lastname} {timeAgo}
+                </span>
               </div>
               <div className="chat-bubble">{msg.text}</div>
               <div className="chat-footer opacity-50">Seen</div>
